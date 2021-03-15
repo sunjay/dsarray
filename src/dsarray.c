@@ -12,7 +12,13 @@ dsarray dsarray_with_capacity(size_t el_size, size_t capacity) {
         .el_size = el_size,
     };
 
+    dsarray_reserve(&arr, capacity);
+
     return arr;
+}
+
+void dsarray_destroy(dsarray *arr) {
+    free(arr->data);
 }
 
 bool dsarray_is_empty(dsarray *arr) {

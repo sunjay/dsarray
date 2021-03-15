@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stddef.h> // size_t
+#include <stddef.h> // size_t, NULL
 #include <stdbool.h> // bool
 
 /// A dynamically-sized array of data
@@ -18,8 +18,13 @@ typedef struct {
 /// Creates a new empty dynamically-sized array
 dsarray dsarray_new(size_t el_size);
 
-/// Creates a new empty dynamically-sized array with the given capacity
+/// Creates a new empty dynamically-sized array with at least the given capacity
 dsarray dsarray_with_capacity(size_t el_size, size_t capacity);
+
+/// Frees a dynamically-sized array
+///
+/// Undefined behavior to use an array after it was passed to this function
+void dsarray_destroy(dsarray *arr);
 
 /// Returns true if the array is empty
 bool dsarray_is_empty(dsarray *arr);

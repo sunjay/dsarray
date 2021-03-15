@@ -12,6 +12,8 @@ void test_testing_framework(void) {
 
     TEST_ASSERT_EQUAL_UINT(dsarray_len(&arr), 0);
     TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
+
+    dsarray_destroy(&arr);
 }
 
 int main(void) {
