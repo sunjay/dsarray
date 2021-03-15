@@ -14,4 +14,12 @@ printf("%d\n", *item);
 
 ## Building
 
-Run `make`. This will generate `build/libdsarray.a` and `build/libdsarray.so`.
+Run `make` from the project's root directory.
+
+This will generate `build/libdsarray.a` and `build/libdsarray.so`.
+
+## Running Tests
+
+Run `make test` from the project's root directory.
+
+This will run the unit tests in the `tests` directory.
