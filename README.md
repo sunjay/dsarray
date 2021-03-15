@@ -8,8 +8,13 @@ different type. To make this work, you need to pass in the size of the type you 
 you create the array.
 
 ```c
-dsarray items = dsarray_new(sizeof(int));
+dsarray items;
+dsarray_new(&items, sizeof(int));
+
+// Push an item into the array
 dsarray_push(&items, &3);
+
+// Get an item from the array and print it
 int *item = dsarray_get(&items, 0);
 printf("%d\n", *item);
 ```

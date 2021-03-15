@@ -15,11 +15,11 @@ typedef struct {
     size_t el_size;
 } dsarray;
 
-/// Creates a new empty dynamically-sized array
-dsarray dsarray_new(size_t el_size);
+/// Initializes `arr` as an empty dynamically-sized array
+void dsarray_new(dsarray *arr, size_t el_size);
 
-/// Creates a new empty dynamically-sized array with at least the given capacity
-dsarray dsarray_with_capacity(size_t el_size, size_t capacity);
+/// Initializes `arr` as an empty dynamically-sized array with at least the given capacity
+void dsarray_with_capacity(dsarray *arr, size_t el_size, size_t capacity);
 
 /// Frees a dynamically-sized array
 ///

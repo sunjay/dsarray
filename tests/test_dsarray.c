@@ -8,7 +8,8 @@ void setUp(void) {}
 void tearDown(void) {}
 
 void test_empty_array(void) {
-    dsarray arr = dsarray_new(sizeof(int));
+    dsarray arr;
+    dsarray_new(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(dsarray_len(&arr), 0);
     // Should not allocate when initially empty

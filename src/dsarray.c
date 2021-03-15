@@ -13,21 +13,17 @@ static inline size_t next_power_of_2(size_t x) {
     }
 }
 
-dsarray dsarray_new(size_t el_size) {
-    return dsarray_with_capacity(el_size, 0);
+void dsarray_new(dsarray *arr, size_t el_size) {
+    dsarray_with_capacity(arr, el_size, 0);
 }
 
-dsarray dsarray_with_capacity(size_t el_size, size_t capacity) {
-    dsarray arr = {
-        .data = NULL,
-        .length = 0,
-        .capacity = capacity,
-        .el_size = el_size,
-    };
+void dsarray_with_capacity(dsarray *arr, size_t el_size, size_t capacity) {
+    arr->data = NULL;
+    arr->length = 0;
+    arr->capacity = capacity;
+    arr->el_size = el_size;
 
-    dsarray_reserve(&arr, capacity);
-
-    return arr;
+    dsarray_reserve(arr, capacity);
 }
 
 void dsarray_destroy(dsarray *arr) {
