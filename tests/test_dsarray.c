@@ -88,12 +88,44 @@ void test_array_as_stack(void) {
     dsarray_destroy(&arr);
 }
 
+void test_no_over_allocate(void) {
+    // Make sure it is possible to allocate exactly as much as there is capacity
+
+    dsarray arr;
+    dsarray_new(&arr, sizeof(int));
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+
+    for (int i = 0; ; i++) {
+        dsarray_push(&arr, &i);
+
+        if (dsarray_capacity(&arr) >= 100 && dsarray_len(&arr) != dsarray_capacity(&arr)) {
+            break;
+        }
+    }
+
+    // Make sure we start out with a length less than and NOT equal to the capacity
+    TEST_ASSERT_TRUE(dsarray_len(&arr) < dsarray_capacity(&arr));
+
+    // Push exactly enough items to get up to the capacity
+    size_t remaining = dsarray_capacity(&arr) - dsarray_len(&arr);
+    for (int i = 0; (size_t)i < remaining; i++) {
+        dsarray_push(&arr, &i);
+    }
+
+    // The length and the capacity should be equal now
+    TEST_ASSERT_EQUAL_UINT(dsarray_len(&arr), dsarray_capacity(&arr));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
     RUN_TEST(test_empty_array);
     RUN_TEST(test_simple_push_get);
     RUN_TEST(test_array_as_stack);
+    RUN_TEST(test_no_over_allocate);
 
     return UNITY_END();
 }
