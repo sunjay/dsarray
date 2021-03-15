@@ -11,3 +11,7 @@ dsarray_push(&items, &3);
 int *item = dsarray_get(&items, 0);
 printf("%d\n", *item);
 ```
+
+## Building
+
+Run `make`. This will generate `build/libdsarray.a` and `build/libdsarray.so`.
