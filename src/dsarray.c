@@ -1,5 +1,18 @@
 #include "dsarray.h"
 
+#include <stdlib.h> // realloc
+
+// Based on: https://stackoverflow.com/a/10143264/551904
+__attribute__ ((const))
+static inline size_t next_power_of_2(size_t x) {
+    if (x == 0) {
+        return 1;
+    } else {
+        // Only works on 64-bit platforms
+        return ((size_t)1) << (64 - __builtin_clzl(x));
+    }
+}
+
 dsarray dsarray_new(size_t el_size) {
     return dsarray_with_capacity(el_size, 0);
 }
@@ -74,7 +87,25 @@ void dsarray_clear(dsarray *arr) {
 }
 
 void dsarray_reserve(dsarray *arr, size_t additional) {
-    //TODO
+    if (additional == 0) return;
+
+    size_t target_capacity = dsarray_len(arr)+additional;
+
+    // Do nothing if there is already enough space
+    if (target_capacity < dsarray_capacity(arr)) {
+        return;
+    }
+
+    // Round capacity to the next power of 2 to avoid frequent reallocations
+    // Since additional >= 1, `target_capacity-1` will be >= 0
+    target_capacity = next_power_of_2(target_capacity-1);
+
+    // Allocate enough space for `target_capacity` elements and copy over the old data if any
+    arr->data = realloc(arr->data, target_capacity * arr->el_size);
+    if (!arr->data) {
+        abort();
+    }
+    arr->capacity = target_capacity;
 }
 
 void dsarray_shrink_to_fit(dsarray *arr) {
