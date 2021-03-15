@@ -25,8 +25,31 @@ run: $(TEST_RUNNERS)
 	@for runner in $(TEST_RUNNERS); do \
 		echo ; \
 		echo "==========" Running $$runner "==========" ; \
+		echo ; \
 		$$runner ; \
 	done
+	@for runner in $(TEST_RUNNERS); do \
+		echo ; \
+		echo "==========" Running $$runner "(valgrind)" "==========" ; \
+		echo ; \
+		logfile=../`date +"%F_%H-%M-%S"`_`basename $$runner`.valgrind.out ; \
+		valgrind --leak-check=full \
+			--show-leak-kinds=all \
+			--track-origins=yes \
+			--log-file=$$logfile \
+			--error-exitcode=1 \
+			$$runner ; \
+		if [ $$? -ne 0 ]; then \
+			cat $$logfile ; \
+			echo ; \
+			echo "Failed while running test under valgrind: $$runner" ; \
+			echo ; \
+			exit 1 ; \
+		fi ; \
+	done
+	@echo
+	@echo "All tests passed successfully."
+	@echo
 
 $(BUILD_DIR)/%: $(OBJ_DIR)/%.o $(DEPS) $(LIB) | $(BUILD_DIR)
 	$(CC) $(LDFLAGS) $^ -o $@
