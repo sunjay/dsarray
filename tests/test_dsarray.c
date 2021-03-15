@@ -65,12 +65,13 @@ void test_array_as_stack(void) {
     int curr = 9;
     while (!dsarray_is_empty(&arr)) {
         // Pop the top value off the stack
-        int *top = dsarray_last(&arr);
+        int *top_ptr = dsarray_last(&arr);
+        TEST_ASSERT_NOT_NULL(top_ptr);
+        int top = *top_ptr;
         dsarray_pop(&arr);
 
         // Check that we got the right value
-        TEST_ASSERT_NOT_NULL(top);
-        TEST_ASSERT_EQUAL_INT(curr, *top);
+        TEST_ASSERT_EQUAL_INT(curr, top);
 
         // Length should be decreasing
         TEST_ASSERT_EQUAL_UINT(curr, dsarray_len(&arr));
