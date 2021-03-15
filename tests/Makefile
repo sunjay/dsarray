@@ -46,6 +46,7 @@ run: $(TEST_RUNNERS)
 			echo ; \
 			exit 1 ; \
 		fi ; \
+		rm $$logfile ; \
 	done
 	@echo
 	@echo "All tests passed successfully."
