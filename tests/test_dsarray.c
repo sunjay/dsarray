@@ -11,9 +11,9 @@ void test_empty_array(void) {
     dsarray arr;
     dsarray_new(&arr, sizeof(int));
 
-    TEST_ASSERT_EQUAL_UINT(dsarray_len(&arr), 0);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
     // Should not allocate when initially empty
-    TEST_ASSERT_EQUAL_UINT(dsarray_capacity(&arr), 0);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_capacity(&arr));
     TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
 
     dsarray_destroy(&arr);
