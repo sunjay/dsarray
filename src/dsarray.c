@@ -1,6 +1,7 @@
 #include "dsarray.h"
 
 #include <stdlib.h> // realloc
+#include <string.h> // memmove
 
 // Based on: https://stackoverflow.com/a/10143264/551904
 __attribute__ ((const))
@@ -63,7 +64,15 @@ void *dsarray_last(dsarray *arr) {
 }
 
 void dsarray_push(dsarray *arr, void *item) {
-    //TODO
+    // Make sure there is space for at least one element
+    dsarray_reserve(arr, 1);
+
+    // Get the uninitialized slot for the item one past the end of the array
+    void *slot = dsarray_get_unchecked(arr, arr->length);
+    memmove(slot, item, arr->el_size);
+
+    // Now that it is initialized, the slot can be used safely
+    arr->length += 1;
 }
 
 void dsarray_pop(dsarray *arr) {

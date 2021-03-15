@@ -12,9 +12,10 @@ dsarray items;
 dsarray_new(&items, sizeof(int));
 
 // Push an item into the array
-dsarray_push(&items, &3);
+int value = 3;
+dsarray_push(&items, &value);
 
-// Get an item from the array and print it
+// Get the item from the array and print it
 int *item = dsarray_get(&items, 0);
 printf("%d\n", *item);
 ```
