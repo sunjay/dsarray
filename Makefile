@@ -1,7 +1,7 @@
 SRC_DIR := src
 BUILD_DIR := build
 OBJ_DIR := $(BUILD_DIR)/obj
-LIB := $(BUILD_DIR)/dsarray.a $(BUILD_DIR)/dsarray.so
+LIB := $(BUILD_DIR)/libdsarray.a $(BUILD_DIR)/libdsarray.so
 
 CC = clang
 AR = ar
