@@ -120,6 +120,60 @@ void test_no_over_allocate(void) {
     dsarray_destroy(&arr);
 }
 
+void test_insert(void) {
+    dsarray arr;
+    dsarray_new(&arr, sizeof(int));
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+
+    // Continuously insert at the front of the array
+    for (int i = 0; i < 100; i++) {
+        TEST_ASSERT_EQUAL_UINT(i, dsarray_len(&arr));
+
+        dsarray_insert(&arr, 0, &i);
+        TEST_ASSERT_EQUAL_INT(i, *(int*)dsarray_first(&arr));
+
+        TEST_ASSERT_EQUAL_UINT(i+1, dsarray_len(&arr));
+    }
+
+    // Values should be reversed
+    for (int i = 0; i < 100; i++) {
+        int *top_ptr = dsarray_last(&arr);
+        TEST_ASSERT_NOT_NULL(top_ptr);
+        int top = *top_ptr;
+        dsarray_pop(&arr);
+
+        TEST_ASSERT_EQUAL_INT(i, top);
+        TEST_ASSERT_EQUAL_UINT(100-i-1, dsarray_len(&arr));
+    }
+
+    TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
+
+    // Push some values
+    for (int value = 0; value < 4; value += 1) {
+        dsarray_push(&arr, &value);
+    }
+
+    // Insert in the middle
+    int value = -1;
+    dsarray_insert(&arr, dsarray_len(&arr)/2, &value);
+
+    // Should be exactly the 5 values we expect
+    TEST_ASSERT_EQUAL_UINT(5, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_INT(0, *(int*)dsarray_get(&arr, 0));
+    TEST_ASSERT_EQUAL_INT(1, *(int*)dsarray_get(&arr, 1));
+    TEST_ASSERT_EQUAL_INT(-1, *(int*)dsarray_get(&arr, 2));
+    TEST_ASSERT_EQUAL_INT(2, *(int*)dsarray_get(&arr, 3));
+    TEST_ASSERT_EQUAL_INT(3, *(int*)dsarray_get(&arr, 4));
+
+    // Insert at the end
+    value = -99;
+    dsarray_insert(&arr, dsarray_len(&arr), &value);
+    TEST_ASSERT_EQUAL_INT(-99, *(int*)dsarray_last(&arr));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
@@ -127,6 +181,7 @@ int main(void) {
     RUN_TEST(test_simple_push_get);
     RUN_TEST(test_array_as_stack);
     RUN_TEST(test_no_over_allocate);
+    RUN_TEST(test_insert);
 
     return UNITY_END();
 }

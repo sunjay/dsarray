@@ -80,7 +80,26 @@ void dsarray_pop(dsarray *arr) {
 }
 
 void dsarray_insert(dsarray *arr, size_t index, void *item) {
-    //TODO
+    // Make sure there is space for at least one element
+    dsarray_reserve(arr, 1);
+
+    size_t len = dsarray_len(arr);
+
+    // Move all elements from the index onwards into the next slot
+    // Need to do this while iterating backwards to avoid overlap
+    // Fancy loop accounts for unsigned type: https://stackoverflow.com/a/665773/551904
+    for (size_t i = len; i-- > index;) {
+        void *curr_item = dsarray_get_unchecked(arr, i);
+        // This is will always be memory we consider "uninitialized"
+        void *next_item = dsarray_get_unchecked(arr, i+1);
+        memmove(next_item, curr_item, arr->el_size);
+    }
+
+    // Put the item into its slot, now that the slot is empty
+    void *slot = dsarray_get_unchecked(arr, index);
+    memmove(slot, item, arr->el_size);
+
+    arr->length += 1;
 }
 
 void dsarray_remove(dsarray *arr, size_t index) {

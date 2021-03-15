@@ -65,7 +65,7 @@ void dsarray_pop(dsarray *arr);
 ///
 /// May reallocate if len == capacity.
 ///
-/// Undefined behavior if the index is out of bounds
+/// Undefined behavior if the index is greater than length (equal to length is fine)
 void dsarray_insert(dsarray *arr, size_t index, void *item);
 
 /// Removes the element at position `index`, shifting all elements after it to the left.
