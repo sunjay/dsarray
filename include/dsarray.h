@@ -57,6 +57,8 @@ void dsarray_push(dsarray *arr, void *item);
 /// Removes the last element from the array
 ///
 /// Use `dsarray_last` to get a copy of the value before it is removed.
+///
+/// Undefined behavior if this is called on an empty array.
 void dsarray_pop(dsarray *arr);
 
 /// Inserts an element at position `index`, shifting all elements after it to the right.

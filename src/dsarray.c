@@ -76,7 +76,7 @@ void dsarray_push(dsarray *arr, void *item) {
 }
 
 void dsarray_pop(dsarray *arr) {
-    //TODO
+    arr->length -= 1;
 }
 
 void dsarray_insert(dsarray *arr, size_t index, void *item) {
