@@ -10,7 +10,7 @@ UNITY_DIR := lib/unity
 DEPS := $(DEPS_DIR)/unity.o
 
 CC = clang
-CFLAGS = -Wall -Wextra -MMD -MP -I$(LIB_INCLUDE_DIR) -isystem$(UNITY_DIR)
+CFLAGS = -g -std=c99 -Wall -Wextra -MMD -MP -I$(LIB_INCLUDE_DIR) -isystem$(UNITY_DIR)
 LDFLAGS = -L../build
 
 TESTS := $(wildcard $(TESTS_DIR)/*.c)

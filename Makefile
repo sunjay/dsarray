@@ -5,7 +5,7 @@ LIB := $(BUILD_DIR)/libdsarray.a $(BUILD_DIR)/libdsarray.so
 
 CC = clang
 AR = ar
-CFLAGS = -Wall -Wextra -MMD -MP -Iinclude
+CFLAGS = -g -std=c99 -Wall -Wextra -MMD -MP -Iinclude
 
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
