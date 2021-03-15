@@ -1,5 +1,7 @@
 # dsarray - Dynamically-sized Array in C
 
+[![CI](https://github.com/sunjay/dsarray/actions/workflows/dsarray.yml/badge.svg)](https://github.com/sunjay/dsarray/actions/workflows/dsarray.yml)
+
 This is an implementation of a dynamically sized array in C. It uses `void *` to simulate
 "polymorphism" so you do not need to redefine the array every time you need to use it for a
 different type. To make this work, you need to pass in the size of the type you are storing when
