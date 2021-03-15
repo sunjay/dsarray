@@ -22,10 +22,14 @@ TEST_RUNNERS := $(TESTS:$(TESTS_DIR)/%.c=$(BUILD_DIR)/%)
 .SECONDARY: $(TESTS_OBJ)
 
 run: $(TEST_RUNNERS)
+	@for runner in $(TEST_RUNNERS); do \
+		echo ; \
+		echo "==========" Running $$runner "==========" ; \
+		$$runner ; \
+	done
 
 $(BUILD_DIR)/%: $(OBJ_DIR)/%.o $(DEPS) $(LIB) | $(BUILD_DIR)
 	$(CC) $(LDFLAGS) $^ -o $@
-	$@
 
 $(OBJ_DIR)/%.o: $(TESTS_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
