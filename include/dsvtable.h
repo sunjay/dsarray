@@ -14,20 +14,22 @@ typedef void (*op_drop)(void *a);
 ///
 /// This will be called when the `item` pointer does not need to be preserved during a copy.
 ///
-/// The argument pointers are guaranteed to be unique.
+/// The argument pointers are guaranteed to be unique. This function is not expected to have any
+/// side-effects.
 typedef void (*op_move)(void *dest, void *item);
 
 /// Copy the given item into the given uninitialized destination slot
 ///
 /// This will be called when the original item pointer must remain valid for use.
 ///
-/// The argument pointers are guaranteed to be unique.
+/// The argument pointers are guaranteed to be unique. This function is not expected to have any
+/// side-effects.
 typedef void (*op_copy)(void *dest, void *item);
 
 /// Comparator function for comparing two items stored in the array
 ///
 /// The two addresses provided as arguments are not guaranteed to be unique. This function is
-/// expected to not have any side-effects.
+/// expected to not have any side-effects. It should not modify the items in any way.
 ///
 /// Return value interpretation:
 ///
@@ -37,9 +39,16 @@ typedef void (*op_copy)(void *dest, void *item);
 typedef int8_t (*op_cmp)(void *a, void *b);
 
 /// Test for total equality between two items stored in the array
+///
+/// The two addresses provided as arguments are not guaranteed to be unique. This function is
+/// expected to not have any side-effects. It should not modify the items in any way.
+///
+/// Returns true if the item at `a` is equal to the item at `b`, and returns false otherwise.
 typedef bool (*op_eq)(void *a, void *b);
 
 /// Print the given item to stdout
+///
+/// This function is not expected to modify the item in any way.
 ///
 /// Assumes that just the item will be printed, without any trailing newline
 typedef void (*op_print)(void *a);
@@ -50,32 +59,35 @@ typedef void (*op_print)(void *a);
 /// not be supported unless certain vtable entries are present.
 typedef struct {
     op_drop drop;
+
     op_move move;
     op_copy copy;
+
     op_cmp cmp;
     op_eq eq;
+
     op_print print;
 } dsvtable;
 
 //// vtables for standard types provided by this library ////
 
-extern dsvtable dsitem_int8_t_vtable;
-extern dsvtable dsitem_int16_t_vtable;
-extern dsvtable dsitem_int32_t_vtable;
-extern dsvtable dsitem_int64_t_vtable;
+extern dsvtable vtable_int8_t;
+extern dsvtable vtable_int16_t;
+extern dsvtable vtable_int32_t;
+extern dsvtable vtable_int64_t;
 
-extern dsvtable dsitem_uint8_t_vtable;
-extern dsvtable dsitem_uint16_t_vtable;
-extern dsvtable dsitem_uint32_t_vtable;
-extern dsvtable dsitem_uint64_t_vtable;
+extern dsvtable vtable_uint8_t;
+extern dsvtable vtable_uint16_t;
+extern dsvtable vtable_uint32_t;
+extern dsvtable vtable_uint64_t;
 
-extern dsvtable dsitem_float_vtable;
-extern dsvtable dsitem_double_vtable;
+extern dsvtable vtable_float;
+extern dsvtable vtable_double;
 
-extern dsvtable dsitem_char_vtable;
-extern dsvtable dsitem_bool_vtable;
+extern dsvtable vtable_char;
+extern dsvtable vtable_bool;
 
-extern dsvtable dsitem_size_t_vtable;
-extern dsvtable dsitem_ssize_t_vtable;
+extern dsvtable vtable_size_t;
 
-extern dsvtable dsitem_file_vtable;
+/// vtable for an array of `FILE *` values
+extern dsvtable vtable_file;
