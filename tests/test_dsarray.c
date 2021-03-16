@@ -297,6 +297,62 @@ void test_remove_shrink(void) {
     dsarray_destroy(&arr);
 }
 
+void test_truncate(void) {
+    dsarray arr;
+    dsarray_init_capacity(&arr, sizeof(int), 10);
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+
+    size_t capacity = dsarray_capacity(&arr);
+
+    // Truncating empty does nothing
+    dsarray_truncate(&arr, 0);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Truncating greater than the length does nothing
+    dsarray_truncate(&arr, 10);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Push some elements
+    for (int i = 0; i < 10; i++) {
+        dsarray_push(&arr, &i);
+    }
+    TEST_ASSERT_EQUAL_UINT(10, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Truncating to the exact length does nothing
+    dsarray_truncate(&arr, 10);
+    TEST_ASSERT_EQUAL_UINT(10, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Truncating greater than the length does nothing
+    dsarray_truncate(&arr, 100);
+    TEST_ASSERT_EQUAL_UINT(10, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Truncate half the elements
+    dsarray_truncate(&arr, 5);
+    TEST_ASSERT_EQUAL_UINT(5, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Push still works after truncate
+    for (int i = 0; i < 3; i++) {
+        dsarray_push(&arr, &i);
+    }
+    TEST_ASSERT_EQUAL_UINT(8, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Truncate to empty
+    dsarray_truncate(&arr, 0);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+    TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
@@ -308,6 +364,7 @@ int main(void) {
     RUN_TEST(test_remove);
     RUN_TEST(test_clear);
     RUN_TEST(test_remove_shrink);
+    RUN_TEST(test_truncate);
 
     return UNITY_END();
 }

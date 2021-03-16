@@ -150,5 +150,7 @@ void dsarray_shrink_to_fit(dsarray *arr) {
 }
 
 void dsarray_truncate(dsarray *arr, size_t len) {
-    //TODO
+    if (len < dsarray_len(arr)) {
+        arr->length = len;
+    }
 }
