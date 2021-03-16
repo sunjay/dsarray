@@ -251,6 +251,52 @@ void test_clear(void) {
     dsarray_destroy(&arr);
 }
 
+void test_remove_shrink(void) {
+    // It's hard to write a test for shrink_to_fit because we don't make any specific guarantees
+    // about how much it will shrink. I do however think it is reasonable to assume that we will
+    // definitely shrink *some* amount if we have more than twice the needed space allocated. That
+    // is the case we are testing here.
+
+    dsarray arr;
+    dsarray_new(&arr, sizeof(int));
+
+    // Push some items
+    for (int i = 0; i < 100; i++) {
+        dsarray_push(&arr, &i);
+    }
+
+    // Remove many items
+    for (int i = 0; i < 40; i++) {
+        dsarray_pop(&arr);
+    }
+
+    // We have many more slots allocated than needed
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) > 2*dsarray_len(&arr));
+
+    size_t len = dsarray_len(&arr);
+    size_t capacity = dsarray_capacity(&arr);
+
+    // Shrink down the capacity
+    dsarray_shrink_to_fit(&arr);
+
+    // Length should stay the same
+    TEST_ASSERT_EQUAL_UINT(len, dsarray_len(&arr));
+    // Capacity should have shrunk down from before
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) <= 2*dsarray_len(&arr));
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) < capacity);
+
+    capacity = dsarray_capacity(&arr);
+
+    // Further shrinks should not affect anything
+    dsarray_shrink_to_fit(&arr);
+
+    // Length should stay the same
+    TEST_ASSERT_EQUAL_UINT(len, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
@@ -261,6 +307,7 @@ int main(void) {
     RUN_TEST(test_insert);
     RUN_TEST(test_remove);
     RUN_TEST(test_clear);
+    RUN_TEST(test_remove_shrink);
 
     return UNITY_END();
 }

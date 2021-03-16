@@ -89,8 +89,8 @@ void dsarray_reserve(dsarray *arr, size_t additional);
 
 /// Shrinks the capacity of the array as much as possible.
 ///
-/// It will drop down as close as possible to the length but the allocator may still inform the
-/// array that there is space for a few more elements.
+/// It will drop down as close as possible to the length but the may still reserve some additional
+/// capacity for a few more elements.
 void dsarray_shrink_to_fit(dsarray *arr);
 
 /// Shortens the array, keeping the first `len` elements and dropping the rest.

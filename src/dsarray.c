@@ -142,7 +142,11 @@ void dsarray_reserve(dsarray *arr, size_t additional) {
 }
 
 void dsarray_shrink_to_fit(dsarray *arr) {
-    //TODO
+    arr->data = realloc(arr->data, arr->length * arr->el_size);
+    if (!arr->data) {
+        abort();
+    }
+    arr->capacity = arr->length;
 }
 
 void dsarray_truncate(dsarray *arr, size_t len) {
