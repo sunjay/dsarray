@@ -19,7 +19,7 @@ typedef struct {
 void dsarray_init(dsarray *arr, size_t el_size);
 
 /// Initializes `arr` as an empty dynamically-sized array with at least the given capacity
-void dsarray_with_capacity(dsarray *arr, size_t el_size, size_t capacity);
+void dsarray_init_capacity(dsarray *arr, size_t el_size, size_t capacity);
 
 /// Frees a dynamically-sized array
 ///

@@ -15,10 +15,10 @@ static inline size_t next_power_of_2(size_t x) {
 }
 
 void dsarray_init(dsarray *arr, size_t el_size) {
-    dsarray_with_capacity(arr, el_size, 0);
+    dsarray_init_capacity(arr, el_size, 0);
 }
 
-void dsarray_with_capacity(dsarray *arr, size_t el_size, size_t capacity) {
+void dsarray_init_capacity(dsarray *arr, size_t el_size, size_t capacity) {
     arr->data = NULL;
     arr->length = 0;
     arr->capacity = capacity;
