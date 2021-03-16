@@ -14,7 +14,7 @@ static inline size_t next_power_of_2(size_t x) {
     }
 }
 
-void dsarray_new(dsarray *arr, size_t el_size) {
+void dsarray_init(dsarray *arr, size_t el_size) {
     dsarray_with_capacity(arr, el_size, 0);
 }
 

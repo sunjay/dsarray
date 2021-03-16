@@ -9,7 +9,7 @@ you create the array.
 
 ```c
 dsarray items;
-dsarray_new(&items, sizeof(int));
+dsarray_init(&items, sizeof(int));
 
 // Push an item into the array
 int value = 3;

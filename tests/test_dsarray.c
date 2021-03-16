@@ -9,7 +9,7 @@ void tearDown(void) {}
 
 void test_empty_array(void) {
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
     TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
@@ -21,7 +21,7 @@ void test_empty_array(void) {
 
 void test_simple_push_get(void) {
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
     TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
@@ -45,7 +45,7 @@ void test_simple_push_get(void) {
 
 void test_array_as_stack(void) {
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
     TEST_ASSERT_TRUE(dsarray_is_empty(&arr));
@@ -93,7 +93,7 @@ void test_no_over_allocate(void) {
     // Make sure it is possible to allocate exactly as much as there is capacity
 
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
 
@@ -122,7 +122,7 @@ void test_no_over_allocate(void) {
 
 void test_insert(void) {
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
 
@@ -176,7 +176,7 @@ void test_insert(void) {
 
 void test_remove(void) {
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
 
@@ -221,7 +221,7 @@ void test_remove(void) {
 
 void test_clear(void) {
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
 
@@ -258,7 +258,7 @@ void test_remove_shrink(void) {
     // is the case we are testing here.
 
     dsarray arr;
-    dsarray_new(&arr, sizeof(int));
+    dsarray_init(&arr, sizeof(int));
 
     // Push some items
     for (int i = 0; i < 100; i++) {

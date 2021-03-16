@@ -16,7 +16,7 @@ typedef struct {
 } dsarray;
 
 /// Initializes `arr` as an empty dynamically-sized array
-void dsarray_new(dsarray *arr, size_t el_size);
+void dsarray_init(dsarray *arr, size_t el_size);
 
 /// Initializes `arr` as an empty dynamically-sized array with at least the given capacity
 void dsarray_with_capacity(dsarray *arr, size_t el_size, size_t capacity);
