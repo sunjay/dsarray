@@ -3,6 +3,8 @@
 #include <stddef.h> // size_t, NULL
 #include <stdbool.h> // bool
 
+#include "dsvtable.h"
+
 /// A dynamically-sized array of data
 typedef struct {
     /// Pointer to the allocated data
