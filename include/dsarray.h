@@ -7,14 +7,16 @@
 
 /// A dynamically-sized array of data
 typedef struct {
+    /// The size of each element in the array
+    size_t el_size;
+    /// The vtable of the type of item stored in the array (if any)
+    dsvtable *vtable;
     /// Pointer to the allocated data
     void *data;
     /// The number of items of size `el_size` currently in use
     size_t length;
     /// The total number of items of size `el_size` that can be stored in `data`
     size_t capacity;
-    /// The size of each element in the array
-    size_t el_size;
 } dsarray;
 
 /// Initializes `arr` as an empty dynamically-sized array
@@ -22,6 +24,13 @@ void dsarray_init(dsarray *arr, size_t el_size);
 
 /// Initializes `arr` as an empty dynamically-sized array with at least the given capacity
 void dsarray_init_capacity(dsarray *arr, size_t el_size, size_t capacity);
+
+/// Initializes `arr` as an empty dynamically-sized array with the given vtable
+void dsarray_init_vtable(dsarray *arr, size_t el_size, dsvtable *vtable);
+
+/// Initializes `arr` as an empty dynamically-sized array with the given vtable and at least the
+/// given capacity
+void dsarray_init_vtable_capacity(dsarray *arr, size_t el_size, dsvtable *vtable, size_t capacity);
 
 /// Frees a dynamically-sized array
 ///

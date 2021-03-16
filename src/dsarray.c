@@ -19,10 +19,19 @@ void dsarray_init(dsarray *arr, size_t el_size) {
 }
 
 void dsarray_init_capacity(dsarray *arr, size_t el_size, size_t capacity) {
+    dsarray_init_vtable_capacity(arr, el_size, NULL, capacity);
+}
+
+void dsarray_init_vtable(dsarray *arr, size_t el_size, dsvtable *vtable) {
+    dsarray_init_vtable_capacity(arr, el_size, vtable, 0);
+}
+
+void dsarray_init_vtable_capacity(dsarray *arr, size_t el_size, dsvtable *vtable, size_t capacity) {
+    arr->el_size = el_size;
+    arr->vtable = vtable;
     arr->data = NULL;
     arr->length = 0;
     arr->capacity = capacity;
-    arr->el_size = el_size;
 
     dsarray_reserve(arr, capacity);
 }
