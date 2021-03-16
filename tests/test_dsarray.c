@@ -174,6 +174,51 @@ void test_insert(void) {
     dsarray_destroy(&arr);
 }
 
+void test_remove(void) {
+    dsarray arr;
+    dsarray_new(&arr, sizeof(int));
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+
+    // Push some values
+    for (int value = 0; value < 5; value += 1) {
+        dsarray_push(&arr, &value);
+    }
+
+    TEST_ASSERT_EQUAL_UINT(5, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_INT(0, *(int*)dsarray_get(&arr, 0));
+    TEST_ASSERT_EQUAL_INT(1, *(int*)dsarray_get(&arr, 1));
+    TEST_ASSERT_EQUAL_INT(2, *(int*)dsarray_get(&arr, 2));
+    TEST_ASSERT_EQUAL_INT(3, *(int*)dsarray_get(&arr, 3));
+    TEST_ASSERT_EQUAL_INT(4, *(int*)dsarray_get(&arr, 4));
+
+    // Remove an item from the middle
+    dsarray_remove(&arr, 2);
+
+    TEST_ASSERT_EQUAL_UINT(4, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_INT(0, *(int*)dsarray_get(&arr, 0));
+    TEST_ASSERT_EQUAL_INT(1, *(int*)dsarray_get(&arr, 1));
+    TEST_ASSERT_EQUAL_INT(3, *(int*)dsarray_get(&arr, 2));
+    TEST_ASSERT_EQUAL_INT(4, *(int*)dsarray_get(&arr, 3));
+
+    // Remove an item from the end
+    dsarray_remove(&arr, dsarray_len(&arr)-1);
+
+    TEST_ASSERT_EQUAL_UINT(3, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_INT(0, *(int*)dsarray_get(&arr, 0));
+    TEST_ASSERT_EQUAL_INT(1, *(int*)dsarray_get(&arr, 1));
+    TEST_ASSERT_EQUAL_INT(3, *(int*)dsarray_get(&arr, 2));
+
+    // Remove an item from the start
+    dsarray_remove(&arr, 0);
+
+    TEST_ASSERT_EQUAL_UINT(2, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_INT(1, *(int*)dsarray_get(&arr, 0));
+    TEST_ASSERT_EQUAL_INT(3, *(int*)dsarray_get(&arr, 1));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
@@ -182,6 +227,7 @@ int main(void) {
     RUN_TEST(test_array_as_stack);
     RUN_TEST(test_no_over_allocate);
     RUN_TEST(test_insert);
+    RUN_TEST(test_remove);
 
     return UNITY_END();
 }

@@ -103,7 +103,16 @@ void dsarray_insert(dsarray *arr, size_t index, void *item) {
 }
 
 void dsarray_remove(dsarray *arr, size_t index) {
-    //TODO
+    size_t len = dsarray_len(arr);
+
+    // Move all elements from the index onwards to the previous slot
+    for (size_t i = index; i < len; i++) {
+        void *curr_item = dsarray_get_unchecked(arr, i);
+        void *next_item = dsarray_get_unchecked(arr, i+1);
+        memmove(curr_item, next_item, arr->el_size);
+    }
+
+    arr->length -= 1;
 }
 
 void dsarray_clear(dsarray *arr) {
