@@ -353,6 +353,71 @@ void test_truncate(void) {
     dsarray_destroy(&arr);
 }
 
+void test_capacity(void) {
+    dsarray arr;
+    // Initialize with capacity for at least 100 items
+    dsarray_init_capacity(&arr, sizeof(int), 100);
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) >= 100);
+
+    size_t capacity = dsarray_capacity(&arr);
+
+    // Reserve space for significantly more elements
+    dsarray_reserve(&arr, 200);
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) >= 200);
+    // If capacity doesn't change, this test isn't testing anything
+    TEST_ASSERT_NOT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Since nothing has been inserted, this should free all the memory
+    dsarray_shrink_to_fit(&arr);
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_capacity(&arr));
+
+    // Push some items
+    for (int i = 0; i < 5; i++) {
+        dsarray_push(&arr, &i);
+    }
+    TEST_ASSERT_EQUAL_UINT(5, dsarray_len(&arr));
+    capacity = dsarray_capacity(&arr);
+
+    // Reserve space for significantly more elements
+    dsarray_reserve(&arr, 100);
+
+    // Should not affect the length
+    TEST_ASSERT_EQUAL_UINT(5, dsarray_len(&arr));
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) >= 105);
+    // If capacity doesn't change, this test isn't testing anything
+    TEST_ASSERT_NOT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    capacity = dsarray_capacity(&arr);
+
+    // Shrink as much as possible
+    dsarray_shrink_to_fit(&arr);
+
+    // Should not affect the length
+    TEST_ASSERT_EQUAL_UINT(5, dsarray_len(&arr));
+    TEST_ASSERT_TRUE(dsarray_capacity(&arr) < 105);
+    // If capacity doesn't change, this test isn't testing anything
+    TEST_ASSERT_NOT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    capacity = dsarray_capacity(&arr);
+
+    // Remove everything and shrink
+    dsarray_clear(&arr);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    dsarray_shrink_to_fit(&arr);
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_capacity(&arr));
+    // If capacity doesn't change, this test isn't testing anything
+    TEST_ASSERT_NOT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
@@ -365,6 +430,7 @@ int main(void) {
     RUN_TEST(test_clear);
     RUN_TEST(test_remove_shrink);
     RUN_TEST(test_truncate);
+    RUN_TEST(test_capacity);
 
     return UNITY_END();
 }

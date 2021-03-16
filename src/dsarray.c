@@ -1,6 +1,6 @@
 #include "dsarray.h"
 
-#include <stdlib.h> // realloc
+#include <stdlib.h> // realloc, free
 #include <string.h> // memmove
 
 // Based on: https://stackoverflow.com/a/10143264/551904
@@ -29,6 +29,7 @@ void dsarray_init_capacity(dsarray *arr, size_t el_size, size_t capacity) {
 
 void dsarray_destroy(dsarray *arr) {
     free(arr->data);
+    arr->data = NULL;
 }
 
 bool dsarray_is_empty(dsarray *arr) {
@@ -142,11 +143,20 @@ void dsarray_reserve(dsarray *arr, size_t additional) {
 }
 
 void dsarray_shrink_to_fit(dsarray *arr) {
-    arr->data = realloc(arr->data, arr->length * arr->el_size);
-    if (!arr->data) {
-        abort();
+    size_t len = dsarray_len(arr);
+
+    if (len > 0) {
+        arr->data = realloc(arr->data, len * arr->el_size);
+        if (!arr->data) {
+            abort();
+        }
+    } else {
+        free(arr->data);
+        // Need this to avoid double free
+        arr->data = NULL;
     }
-    arr->capacity = arr->length;
+
+    arr->capacity = len;
 }
 
 void dsarray_truncate(dsarray *arr, size_t len) {
