@@ -116,7 +116,7 @@ void dsarray_remove(dsarray *arr, size_t index) {
 }
 
 void dsarray_clear(dsarray *arr) {
-    //TODO
+    arr->length = 0;
 }
 
 void dsarray_reserve(dsarray *arr, size_t additional) {

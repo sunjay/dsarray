@@ -219,6 +219,38 @@ void test_remove(void) {
     dsarray_destroy(&arr);
 }
 
+void test_clear(void) {
+    dsarray arr;
+    dsarray_new(&arr, sizeof(int));
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+
+    // Should work on an empty array
+    size_t capacity = dsarray_capacity(&arr);
+    dsarray_clear(&arr);
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    // Should not change capacity
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    // Push some items
+    for (int i = 0; i < 100; i++) {
+        dsarray_push(&arr, &i);
+    }
+
+    TEST_ASSERT_EQUAL_UINT(100, dsarray_len(&arr));
+    // Save current capacity
+    capacity = dsarray_capacity(&arr);
+
+    // Clear the items
+    dsarray_clear(&arr);
+
+    TEST_ASSERT_EQUAL_UINT(0, dsarray_len(&arr));
+    // Should not change capacity
+    TEST_ASSERT_EQUAL_UINT(capacity, dsarray_capacity(&arr));
+
+    dsarray_destroy(&arr);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
@@ -228,6 +260,7 @@ int main(void) {
     RUN_TEST(test_no_over_allocate);
     RUN_TEST(test_insert);
     RUN_TEST(test_remove);
+    RUN_TEST(test_clear);
 
     return UNITY_END();
 }
