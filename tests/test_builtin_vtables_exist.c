@@ -33,7 +33,7 @@ void test_vtables_exist(void) {
 
         &vtable_file,
 
-        // Used test that TABLES is correct
+        // Used to test that TABLES is correct
         NULL
     };
 
