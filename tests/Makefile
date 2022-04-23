@@ -28,7 +28,13 @@ run: $(TEST_RUNNERS)
 		echo ; \
 		$$runner ; \
 	done
-	@for runner in $(TEST_RUNNERS); do \
+	@if ! command -v valgrind &> /dev/null ; \
+	then \
+		echo ; \
+		echo "valgrind command does not exist." ; \
+		exit ; \
+	else \
+	for runner in $(TEST_RUNNERS); do \
 		echo ; \
 		echo "==========" Running $$runner "(valgrind)" "==========" ; \
 		echo ; \
@@ -47,7 +53,8 @@ run: $(TEST_RUNNERS)
 			exit 1 ; \
 		fi ; \
 		rm $$logfile ; \
-	done
+	done ; \
+	fi
 	@echo
 	@echo "All tests passed successfully."
 	@echo
