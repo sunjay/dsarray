@@ -71,23 +71,4 @@ typedef struct {
 
 //// vtables for standard types provided by this library ////
 
-extern dsvtable vtable_int8_t;
-extern dsvtable vtable_int16_t;
-extern dsvtable vtable_int32_t;
-extern dsvtable vtable_int64_t;
-
-extern dsvtable vtable_uint8_t;
-extern dsvtable vtable_uint16_t;
-extern dsvtable vtable_uint32_t;
-extern dsvtable vtable_uint64_t;
-
-extern dsvtable vtable_float;
-extern dsvtable vtable_double;
-
-extern dsvtable vtable_char;
-extern dsvtable vtable_bool;
-
-extern dsvtable vtable_size_t;
-
-/// vtable for an array of `FILE *` values
-extern dsvtable vtable_file;
+#include "std_dsvtables.h"

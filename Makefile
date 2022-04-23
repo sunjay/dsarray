@@ -22,6 +22,9 @@ all: $(LIB)
 %.so: $(OBJ) | $(BUILD_DIR)
 	$(CC) -shared -o $@ $^
 
+$(SRC_DIR)/dsvtable.c: codegen/vtables.py
+	./codegen/vtables.py
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
